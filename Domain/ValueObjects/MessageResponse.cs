@@ -2,15 +2,10 @@
 {
     public class MessageResponse
     {
-        public MessageResponse(long chatId, int messageId, string message)
+        public MessageResponse(string message)
         {
-            ChatId = chatId;
-            MessageId = messageId;
             Message = message;
         }
-
-        public long ChatId { get; }
-        public int MessageId { get; }
         public string Message { get; }
     }
 }

@@ -4,14 +4,23 @@ namespace GeminiTelegramBot.Infrastructure.Loggers
 {
     internal class ConsoleLogService : ILogService
     {
-        public void LogError(string message, Exception? ex = null)
+        public Task LogErrorAsync(string message, Exception? ex = null)
         {
-            throw new NotImplementedException();
+            if (ex != null)
+            {
+                Console.WriteLine(message + " " + ex.Message);
+            }
+            else
+            {
+                Console.WriteLine(message);
+            }
+            return Task.CompletedTask;
         }
 
-        public void LogInfo(string message)
+        public Task LogInfoAsync(string message)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(message);
+            return Task.CompletedTask;
         }
     }
 }

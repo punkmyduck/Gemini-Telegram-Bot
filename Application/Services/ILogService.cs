@@ -2,7 +2,7 @@
 {
     public interface ILogService
     {
-        void LogInfo(string message);
-        void LogError(string message, Exception? ex = null);
+        Task LogInfoAsync(string message);
+        Task LogErrorAsync(string message, Exception? ex = null);
     }
 }

@@ -2,15 +2,14 @@
 {
     public class MessageRequest
     {
-        public MessageRequest(long chatId, string? username, string? message)
+        public MessageRequest(string message, long chatId, string? username)
         {
+            Message = message;
             ChatId = chatId;
             Username = username;
-            Message = message;
         }
-
         public long ChatId { get; }
         public string? Username { get; }
-        public string? Message { get; }
+        public string Message { get; }
     }
 }

@@ -2,5 +2,5 @@
 
 namespace GeminiTelegramBot.Application.Commands
 {
-    public record HandleUserMessageCommand(MessageRequest Request);
+    public record StartMessageCommand(MessageRequest Request);
 }
