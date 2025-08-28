@@ -1,6 +1,6 @@
 ﻿using GeminiTelegramBot.Application.Handlers;
-using GeminiTelegramBot.Application.Services;
 using GeminiTelegramBot.Infrastructure.Gemini;
+using GeminiTelegramBot.Infrastructure.Gemini.GiminiRequest.Factories;
 using GeminiTelegramBot.Infrastructure.Loggers;
 using GeminiTelegramBot.Infrastructure.TelegramBotInfrastructure;
 using GeminiTelegramBot.Presentation.Telegram;
@@ -19,7 +19,10 @@ namespace GeminiTelegramBot
             UserMessageCommandHandler userMessageCommandHandler =
                 new UserMessageCommandHandler(
                     new ConsoleLogService(),
-                    new GeminiResponseGenerator(),
+                    new GeminiResponseGenerator(
+                        new GeminiReponseParser(),
+                        new GeminiRequestJsonFactory(),
+                        new GeminiApiClient(new HttpClient())),
                     new TelegramMarkdownMessageFormatter());
 
             TelegramUpdateHandler telegramUpdateHandler =

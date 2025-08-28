@@ -1,7 +1,6 @@
 ﻿using GeminiTelegramBot.Domain.Formatters;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace GeminiTelegramBot.Application.Services
+namespace GeminiTelegramBot.Infrastructure.TelegramBotInfrastructure
 {
     internal class TelegramMarkdownMessageFormatter : IMessageFormatter
     {
