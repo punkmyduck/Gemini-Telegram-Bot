@@ -11,7 +11,7 @@ namespace GeminiTelegramBot.Infrastructure.Gemini
         }
         public async Task<GeminiResponseDto> CallApiAsync(string json)
         {
-            string url = $"";
+            string url = $"https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-2.0-flash-lite-001:streamGenerateContent?key=" + "";
 
             using var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(url, content);

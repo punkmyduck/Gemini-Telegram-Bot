@@ -20,7 +20,7 @@ namespace GeminiTelegramBot.Infrastructure.Gemini
         }
         public async Task<string> GenerateAsync(string prompt, CancellationToken token)
         {
-            GeminiRequestJsonDto json = _geminiJsonRequestFactory.CreateJson(prompt);
+            GeminiRequestJsonDto json = _geminiJsonRequestFactory.CreateStringJson(prompt);
 
             GeminiResponseDto response = await _geminiApiClient.CallApiAsync(json.Json);
 

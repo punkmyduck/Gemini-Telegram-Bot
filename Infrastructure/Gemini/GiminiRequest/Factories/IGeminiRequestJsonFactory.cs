@@ -4,6 +4,6 @@ namespace GeminiTelegramBot.Infrastructure.Gemini.GiminiRequest.Factories
 {
     public interface IGeminiRequestJsonFactory
     {
-        GeminiRequestJsonDto CreateJson(string prompt);
+        GeminiRequestJsonDto CreateStringJson(string prompt);
     }
 }

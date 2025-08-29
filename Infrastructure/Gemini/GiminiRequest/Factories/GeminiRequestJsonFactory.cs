@@ -5,7 +5,7 @@ namespace GeminiTelegramBot.Infrastructure.Gemini.GiminiRequest.Factories
 {
     public class GeminiRequestJsonFactory : IGeminiRequestJsonFactory
     {
-        public GeminiRequestJsonDto CreateJson(string prompt)
+        public GeminiRequestJsonDto CreateStringJson(string prompt)
         {
             GeminiRequestBody requestBody = new GeminiRequestBody
             {

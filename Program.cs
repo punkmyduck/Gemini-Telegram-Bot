@@ -20,7 +20,7 @@ namespace GeminiTelegramBot
                 new UserMessageCommandHandler(
                     new ConsoleLogService(),
                     new GeminiResponseGenerator(
-                        new GeminiReponseParser(),
+                        new GeminiReponseParser(new GeminiEnvelopeExtractor()),
                         new GeminiRequestJsonFactory(),
                         new GeminiApiClient(new HttpClient())),
                     new TelegramMarkdownMessageFormatter());
