@@ -4,10 +4,10 @@ using GeminiTelegramBot.Domain.ClientInterfaces;
 
 namespace GeminiTelegramBot.Infrastructure.Gemini
 {
-    public class GeminiReponseParser : IGeminiReponseParser
+    public class GeminiResponseParser : IGeminiReponseParser
     {
         private readonly IGeminiEnvelopeExtractor _extractor;
-        public GeminiReponseParser(IGeminiEnvelopeExtractor extractor)
+        public GeminiResponseParser(IGeminiEnvelopeExtractor extractor)
         {
             _extractor = extractor;
         }

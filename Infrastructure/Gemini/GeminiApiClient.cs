@@ -1,17 +1,23 @@
 ﻿using GeminiTelegramBot.Domain.ClientInterfaces;
+using GeminiTelegramBot.Infrastructure.Options;
+using Microsoft.Extensions.Options;
 
 namespace GeminiTelegramBot.Infrastructure.Gemini
 {
     public class GeminiApiClient : IGeminiApiClient
     {
         private readonly HttpClient _httpClient;
-        public GeminiApiClient(HttpClient httpClient)
+        private readonly GeminiApiOptions _options;
+        public GeminiApiClient(
+            HttpClient httpClient, 
+            IOptions<GeminiApiOptions> options)
         {
             _httpClient = httpClient;
+            _options = options.Value;
         }
         public async Task<GeminiResponseDto> CallApiAsync(string json)
         {
-            string url = $"https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-2.0-flash-lite-001:streamGenerateContent?key=" + "";
+            var url = $"{_options.BaseUrl}/{_options.Model}:{_options.Endpoint}?key={_options.ApiKey}";
 
             using var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(url, content);

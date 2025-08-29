@@ -5,31 +5,62 @@ using GeminiTelegramBot.Infrastructure.Loggers;
 using GeminiTelegramBot.Infrastructure.TelegramBotInfrastructure;
 using GeminiTelegramBot.Presentation.Telegram;
 using Telegram.Bot;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using GeminiTelegramBot.Infrastructure.Options;
+using GeminiTelegramBot.Domain.ClientInterfaces;
+using GeminiTelegramBot.Application.Services;
+using GeminiTelegramBot.Application.Commands;
+using GeminiTelegramBot.Domain.ValueObjects;
+using GeminiTelegramBot.Domain.Formatters;
+using Microsoft.Extensions.Options;
 
 namespace GeminiTelegramBot
 {
-    internal class Program
+    public class Program
     {
         static async Task Main(string[] args)
         {
-            TelegramBotClient botClient = new TelegramBotClient("");
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
 
-            StartCommandHandler startCommandHandler = new StartCommandHandler(new ConsoleLogService());
+            var services = new ServiceCollection();
 
-            UserMessageCommandHandler userMessageCommandHandler =
-                new UserMessageCommandHandler(
-                    new ConsoleLogService(),
-                    new GeminiResponseGenerator(
-                        new GeminiReponseParser(new GeminiEnvelopeExtractor()),
-                        new GeminiRequestJsonFactory(),
-                        new GeminiApiClient(new HttpClient())),
-                    new TelegramMarkdownMessageFormatter());
+            services.Configure<GeminiApiOptions>(configuration.GetSection("GeminiApi"));
+            services.Configure<TelegramBotOptions>(configuration.GetSection("TelegramBot"));
 
-            TelegramUpdateHandler telegramUpdateHandler =
-                new TelegramUpdateHandler(
-                    new ConsoleLogService(),
-                    new MessageDispatcher(startCommandHandler, userMessageCommandHandler),
-                    new TelegramBotClientAdapter(new ConsoleLogService()));
+            services.AddSingleton<TelegramBotClient>(provider =>
+            {
+                var opts = provider.GetRequiredService<IOptions<TelegramBotOptions>>().Value;
+                return new TelegramBotClient(opts.Token);
+            });
+
+            services.AddScoped<IGeminiApiClient, GeminiApiClient>();
+
+            services.AddScoped<ILogService, ConsoleLogService>();
+            services.AddScoped<ICommandHandler<StartMessageCommand, MessageResponse>, StartCommandHandler>();
+            services.AddScoped<ICommandHandler<UserMessageCommand, MessageResponse>, UserMessageCommandHandler>();
+            services.AddScoped<IMessageFormatter, TelegramMarkdownMessageFormatter>();
+
+            services.AddScoped<IGeminiEnvelopeExtractor, GeminiEnvelopeExtractor>();
+            services.AddScoped<IGeminiApiClient, GeminiApiClient>();
+            services.AddScoped<IGeminiRequestJsonFactory, GeminiRequestJsonFactory>();
+            services.AddScoped<IResponseGenerator, GeminiResponseGenerator>();
+            services.AddScoped<IGeminiReponseParser, GeminiResponseParser>();
+            services.AddScoped<HttpClient>();
+
+            services.AddScoped<IMessageDispatcher, MessageDispatcher>();
+            services.AddScoped<ITelegramBotClientAdapter, TelegramBotClientAdapter>();
+            services.AddScoped<TelegramUpdateHandler>();
+
+            var provider = services.BuildServiceProvider();
+
+            var telegramUpdateHandler = provider.GetRequiredService<TelegramUpdateHandler>();
+
+
+            TelegramBotClient botClient = provider.GetRequiredService<TelegramBotClient>();
 
             var me = await botClient.GetMe();
             botClient.StartReceiving(

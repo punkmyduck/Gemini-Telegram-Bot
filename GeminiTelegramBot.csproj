@@ -10,7 +10,15 @@
   <ItemGroup>
     <PackageReference Include="Google.Cloud.AIPlatform.V1" Version="3.45.0" />
     <PackageReference Include="Google.Protobuf" Version="3.32.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
     <PackageReference Include="Telegram.Bot" Version="22.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
