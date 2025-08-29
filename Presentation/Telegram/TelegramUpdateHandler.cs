@@ -28,12 +28,12 @@ namespace GeminiTelegramBot.Presentation.Telegram
 
             await _logService.LogInfoAsync($"[TelegramUpdateHandler][HandleUpdate][{update.Message.Chat.Id}][{update.Message.Chat.Username}] : {update.Message.Text}");
 
-            var messageId = await _telegramBotClientAdapter.SendMessageAsync(botClient, update.Message.Chat.Id, "⏳ Подождите, формирую ответ...", cancellationToken);
+            var messageId = await _telegramBotClientAdapter.SendMessageAsync(update.Message.Chat.Id, "⏳ Подождите, формирую ответ...", cancellationToken);
 
             var request = new MessageRequest(update.Message.Text, update.Message.Chat.Id, update.Message.Chat.Username);
             var response = await _messageDispatcher.DispatchAsync(request, cancellationToken);
 
-            await _telegramBotClientAdapter.EditMessageAsync(botClient, update.Message.Chat.Id, messageId, response.Message, cancellationToken);
+            await _telegramBotClientAdapter.EditMessageAsync(update.Message.Chat.Id, messageId, response.Message, cancellationToken);
         }
         public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {

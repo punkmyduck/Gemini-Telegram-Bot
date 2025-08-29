@@ -6,13 +6,17 @@ namespace GeminiTelegramBot.Infrastructure.TelegramBotInfrastructure
     public class TelegramBotClientAdapter : ITelegramBotClientAdapter
     {
         private readonly ILogService _logService;
-        public TelegramBotClientAdapter(ILogService logService)
+        private readonly ITelegramBotClient _bot;
+        public TelegramBotClientAdapter(
+            ILogService logService,
+            ITelegramBotClient bot)
         {
             _logService = logService;
+            _bot = bot;
         }
-        public async Task<int> SendMessageAsync(ITelegramBotClient bot, long chatId, string text, CancellationToken cancellationToken)
+        public async Task<int> SendMessageAsync(long chatId, string text, CancellationToken cancellationToken)
         {
-            var typingMessage = await bot.SendMessage(
+            var typingMessage = await _bot.SendMessage(
                 chatId: chatId,
                 text: text,
                 cancellationToken: cancellationToken
@@ -21,11 +25,11 @@ namespace GeminiTelegramBot.Infrastructure.TelegramBotInfrastructure
             return typingMessage.MessageId;
         }
 
-        public async Task EditMessageAsync(ITelegramBotClient bot, long chatId, int messageId, string text, CancellationToken cancellationToken)
+        public async Task EditMessageAsync(long chatId, int messageId, string text, CancellationToken cancellationToken)
         {
             try
             {
-                await bot.EditMessageText(
+                await _bot.EditMessageText(
                     chatId: chatId,
                     messageId: messageId,
                     text: text,
@@ -40,7 +44,7 @@ namespace GeminiTelegramBot.Infrastructure.TelegramBotInfrastructure
 
                 try
                 {
-                    await bot.EditMessageText(
+                    await _bot.EditMessageText(
                         chatId: chatId,
                         messageId: messageId,
                         text: $"Произошла ошибка при выполнении запроса!",

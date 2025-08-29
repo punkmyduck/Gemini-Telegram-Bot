@@ -31,7 +31,7 @@ namespace GeminiTelegramBot
             services.Configure<GeminiApiOptions>(configuration.GetSection("GeminiApi"));
             services.Configure<TelegramBotOptions>(configuration.GetSection("TelegramBot"));
 
-            services.AddSingleton<TelegramBotClient>(provider =>
+            services.AddSingleton<ITelegramBotClient>(provider =>
             {
                 var opts = provider.GetRequiredService<IOptions<TelegramBotOptions>>().Value;
                 return new TelegramBotClient(opts.Token);
@@ -60,7 +60,7 @@ namespace GeminiTelegramBot
             var telegramUpdateHandler = provider.GetRequiredService<TelegramUpdateHandler>();
 
 
-            TelegramBotClient botClient = provider.GetRequiredService<TelegramBotClient>();
+            var botClient = provider.GetRequiredService<ITelegramBotClient>();
 
             var me = await botClient.GetMe();
             botClient.StartReceiving(
