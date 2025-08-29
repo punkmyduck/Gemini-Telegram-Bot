@@ -1,4 +1,4 @@
-﻿using GeminiTelegramBot.Domain.Formatters;
+﻿using GeminiTelegramBot.Application.Services;
 
 namespace GeminiTelegramBot.Infrastructure.TelegramBotInfrastructure
 {
@@ -6,13 +6,10 @@ namespace GeminiTelegramBot.Infrastructure.TelegramBotInfrastructure
     {
         public string Format(string rawResponse)
         {
-            // Жирный: **xxx** → *xxx*
             rawResponse = System.Text.RegularExpressions.Regex.Replace(rawResponse, @"\*\*(.+?)\*\*", @"*$1*");
 
-            // Списки: *   text → - text
             rawResponse = System.Text.RegularExpressions.Regex.Replace(rawResponse, @"^\*+\s+", "- ", System.Text.RegularExpressions.RegexOptions.Multiline);
 
-            // Экранирование спецсимволов MarkdownV2
             var charsToEscape = new[] { "_", "[", "]", "(", ")", "~", "`", ">", "#", "+", "=", "|", "{", "}", ".", "!", "-" };
             foreach (var c in charsToEscape)
             {

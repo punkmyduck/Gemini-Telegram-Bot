@@ -1,7 +1,6 @@
 ﻿using GeminiTelegramBot.Application.Commands;
 using GeminiTelegramBot.Application.Services;
 using GeminiTelegramBot.Domain.ClientInterfaces;
-using GeminiTelegramBot.Domain.Formatters;
 using GeminiTelegramBot.Domain.ValueObjects;
 
 namespace GeminiTelegramBot.Application.Handlers

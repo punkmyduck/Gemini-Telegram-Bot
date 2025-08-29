@@ -1,4 +1,5 @@
-﻿using GeminiTelegramBot.Domain.ClientInterfaces;
+﻿using GeminiTelegramBot.Application.Services;
+using GeminiTelegramBot.Domain.ClientInterfaces;
 using GeminiTelegramBot.Infrastructure.Gemini.GiminiRequest.Factories;
 using GeminiTelegramBot.Infrastructure.Gemini.GiminiRequest.RequestDTOs;
 
@@ -9,14 +10,17 @@ namespace GeminiTelegramBot.Infrastructure.Gemini
         private readonly IGeminiReponseParser _geminiReponseParser;
         private readonly IGeminiRequestJsonFactory _geminiJsonRequestFactory;
         private readonly IGeminiApiClient _geminiApiClient;
+        private readonly ILogService _logService;
         public GeminiResponseGenerator(
             IGeminiReponseParser geminiReponseParser, 
             IGeminiRequestJsonFactory geminiContentFactory,
-            IGeminiApiClient geminiApiClient)
+            IGeminiApiClient geminiApiClient,
+            ILogService logService)
         {
             _geminiReponseParser = geminiReponseParser;
             _geminiJsonRequestFactory = geminiContentFactory;
             _geminiApiClient = geminiApiClient;
+            _logService = logService;
         }
         public async Task<string> GenerateAsync(string prompt, CancellationToken token)
         {

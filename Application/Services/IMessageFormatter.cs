@@ -1,4 +1,4 @@
-﻿namespace GeminiTelegramBot.Domain.Formatters
+﻿namespace GeminiTelegramBot.Application.Services
 {
     public interface IMessageFormatter
     {

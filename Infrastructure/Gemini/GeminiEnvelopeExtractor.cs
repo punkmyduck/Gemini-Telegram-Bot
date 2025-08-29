@@ -1,4 +1,5 @@
-﻿using GeminiTelegramBot.Domain.ClientInterfaces;
+﻿using GeminiTelegramBot.Application.Services;
+using GeminiTelegramBot.Domain.ClientInterfaces;
 using System.Text;
 using System.Text.Json;
 
@@ -6,8 +7,14 @@ namespace GeminiTelegramBot.Infrastructure.Gemini
 {
     public class GeminiEnvelopeExtractor : IGeminiEnvelopeExtractor
     {
+        private readonly ILogService _logService;
+        public GeminiEnvelopeExtractor(ILogService logService)
+        {
+            _logService = logService;
+        }
         public string Extract(JsonElement envelope)
         {
+            _logService.LogInfoAsync($"[GeminiEnvelopeExtractor][Extract] Extracting properties ...");
             if (!envelope.TryGetProperty("candidates", out var candidates)
                 || candidates.ValueKind != JsonValueKind.Array) return string.Empty;
 

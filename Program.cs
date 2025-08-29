@@ -60,7 +60,7 @@ namespace GeminiTelegramBot
             var telegramUpdateHandler = provider.GetRequiredService<TelegramUpdateHandler>();
 
 
-            var botClient = provider.GetRequiredService<ITelegramBotClient>();
+            ITelegramBotClient botClient = provider.GetRequiredService<ITelegramBotClient>();
 
             var me = await botClient.GetMe();
             botClient.StartReceiving(
