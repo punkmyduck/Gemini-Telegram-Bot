@@ -12,7 +12,6 @@ using GeminiTelegramBot.Domain.ClientInterfaces;
 using GeminiTelegramBot.Application.Services;
 using GeminiTelegramBot.Application.Commands;
 using GeminiTelegramBot.Domain.ValueObjects;
-using GeminiTelegramBot.Domain.Formatters;
 using Microsoft.Extensions.Options;
 
 namespace GeminiTelegramBot

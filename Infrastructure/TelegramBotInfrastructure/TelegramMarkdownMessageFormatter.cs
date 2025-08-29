@@ -1,20 +1,24 @@
-﻿using GeminiTelegramBot.Application.Services;
+﻿using System.Text.RegularExpressions;
+using GeminiTelegramBot.Application.Services;
 
 namespace GeminiTelegramBot.Infrastructure.TelegramBotInfrastructure
 {
-    internal class TelegramMarkdownMessageFormatter : IMessageFormatter
+    public class TelegramMarkdownMessageFormatter : IMessageFormatter
     {
         public string Format(string rawResponse)
         {
-            rawResponse = System.Text.RegularExpressions.Regex.Replace(rawResponse, @"\*\*(.+?)\*\*", @"*$1*");
+            if (string.IsNullOrWhiteSpace(rawResponse))
+                return string.Empty;
 
-            rawResponse = System.Text.RegularExpressions.Regex.Replace(rawResponse, @"^\*+\s+", "- ", System.Text.RegularExpressions.RegexOptions.Multiline);
-
-            var charsToEscape = new[] { "_", "[", "]", "(", ")", "~", "`", ">", "#", "+", "=", "|", "{", "}", ".", "!", "-" };
+            var charsToEscape = new[] { "_", "[", "]", "(", ")", "~", "`", ">", "#", "+", "-", "=", "|", "{", "}", ".", "!" };
             foreach (var c in charsToEscape)
             {
                 rawResponse = rawResponse.Replace(c, "\\" + c);
             }
+
+            rawResponse = Regex.Replace(rawResponse, @"\*\*(.+?)\*\*", @"*$1*");
+
+            rawResponse = Regex.Replace(rawResponse, @"(?<=^|\n)-", @"\-");
 
             return rawResponse;
         }
